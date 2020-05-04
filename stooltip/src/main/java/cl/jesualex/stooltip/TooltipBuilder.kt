@@ -16,10 +16,18 @@ import android.widget.FrameLayout
 /**
  * Created by jesualex on 2019-04-29.
  */
-class TooltipBuilder(private val tooltip: Tooltip){
-    @JvmOverloads fun show(duration: Long = 0): Tooltip{
-        tooltip.overlay.addView(tooltip.tooltipView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        return tooltip.show(duration)
+class TooltipBuilder(private val tooltip: Tooltip) {
+    @JvmOverloads
+    fun show(duration: Long = 0): Tooltip {
+        return create().show(duration)
+    }
+
+    fun create(): Tooltip = tooltip.apply {
+        overlay.addView(
+            tooltip.tooltipView,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
     fun drawableLeft(@DrawableRes left: Int): TooltipBuilder {
@@ -121,7 +129,7 @@ class TooltipBuilder(private val tooltip: Tooltip){
         tooltip.getImageView()?.let {
             val lp = it.layoutParams
 
-            if(lp is FrameLayout.LayoutParams){
+            if (lp is FrameLayout.LayoutParams) {
                 lp.setMargins(left, top, right, bottom)
                 it.layoutParams = lp
             }
@@ -199,7 +207,8 @@ class TooltipBuilder(private val tooltip: Tooltip){
         return this
     }
 
-    @JvmOverloads fun overlay(@ColorInt color: Int, listener: TooltipClickListener? = null): TooltipBuilder {
+    @JvmOverloads
+    fun overlay(@ColorInt color: Int, listener: TooltipClickListener? = null): TooltipBuilder {
         tooltip.overlay.setBackgroundColor(color)
         tooltip.initTargetClone()
         listener?.let { tooltip.setOverlayListener(listener) }
@@ -207,9 +216,10 @@ class TooltipBuilder(private val tooltip: Tooltip){
     }
 
     /**
-    * Set [r] to 0 for disableShadow
-    */
-    @JvmOverloads fun shadow(r: Float, @ColorInt color: Int = 0xffaaaaaa.toInt()): TooltipBuilder {
+     * Set [r] to 0 for disableShadow
+     */
+    @JvmOverloads
+    fun shadow(r: Float, @ColorInt color: Int = 0xffaaaaaa.toInt()): TooltipBuilder {
         tooltip.tooltipView.setShadow(r, color)
         return this
     }
@@ -219,19 +229,20 @@ class TooltipBuilder(private val tooltip: Tooltip){
         return this
     }
 
-    @JvmOverloads fun animation(@AnimRes animIn: Int,@AnimRes animOut: Int = animIn): TooltipBuilder {
+    @JvmOverloads
+    fun animation(@AnimRes animIn: Int, @AnimRes animOut: Int = animIn): TooltipBuilder {
         tooltip.animIn = animIn
         tooltip.animOut = animOut
         return this
     }
 
     fun minWidth(minWidth: Int): TooltipBuilder {
-        tooltip.tooltipView.minWidth =  minWidth
+        tooltip.tooltipView.minWidth = minWidth
         return this
     }
 
     fun minHeight(minHeight: Int): TooltipBuilder {
-        tooltip.tooltipView.minHeight =  minHeight
+        tooltip.tooltipView.minHeight = minHeight
         return this
     }
 
